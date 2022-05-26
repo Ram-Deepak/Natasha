@@ -2,11 +2,14 @@ import open_url as ou
 import voice_assistant as va
 import datetime
 import pytz
+import battery
+import turnoff
+from location import Location
 
 
 def chat_bot():
     bot_dictionary1 = {
-        "Welcome": "Hi I'm Natasha",
+        "Welcome": "Hi Deepak, I'm Natasha",
         "tell me a joke": "Hahaha",
         "had your lunch?": "Yes of course",
         "hi": "Hi",
@@ -25,18 +28,33 @@ def chat_bot():
     va.reply(bot_dictionary1["Welcome"])
     flag1 = True
     while flag1:
-        bot_input = input("You: ")
+        bot_input = input("You: ").lower()
         # for key in bot_dictionary1.keys():
-        if bot_input.lower() in bot_dictionary1.keys():
-            print("Natasha:", bot_dictionary1[bot_input.lower()])
-            va.reply(bot_dictionary1[bot_input.lower()])
-        elif bot_input.lower() in website_list:
+        if bot_input in bot_dictionary1.keys():
+            print("Natasha:", bot_dictionary1[bot_input])
+            va.reply(bot_dictionary1[bot_input])
+        elif bot_input in website_list:
             ou.print_choices()
-        elif "date" in bot_input.lower():
+        elif "date" in bot_input:
             current_time = datetime.datetime.now(pytz.timezone('Asia/Kolkata'))
             print("Natasha:", str(current_time.day)+":"+str(current_time.month)+":"+str(current_time.year))
-            va.reply(str(current_time.day)+" "+str(current_time.month)+" "+str(current_time.year))
-        elif bot_input.lower() == "exit":
+            va.reply("Today's date is "+str(current_time.day)+" "+str(current_time.month)+" "+str(current_time.year))
+        elif "time" in bot_input:
+            current_date = datetime.datetime.now(pytz.timezone('Asia/Kolkata'))
+            current_time = str(current_date.strftime("%X")).split(':')
+            print("Natasha:", current_time[0]+':'+current_time[1]+':'+current_time[2])
+            va.reply("Time is "+str(current_time[0])+' hours '+str(current_time[1])+' minutes '+str(current_time[2])+' seconds')
+        elif "power" in bot_input or "battery" in bot_input:
+            battery.Power()
+        elif "shutdown" in bot_input or "turnoff" in bot_input:
+            turnoff.ShutDown()
+        elif "location" in bot_input or "place" in bot_input or "find" in bot_input:
+            print('Natasha: Enter the location')
+            va.reply('Enter the location')
+            address = input('You: ')
+            loc = Location(address)
+            loc.map()
+        elif bot_input == "exit":
             return False
         else:
             print("Natasha : Sorry I could not understand")
