@@ -1,7 +1,7 @@
 # Natasha
 Chatbot
 
-This is a Personal Assistant built solely by team RRMN.
+This is a Personal Assistant built solely by me.
 Mainly used in laptop for personal use.
 Language used : Python
 Since this is my first chatbot, I have made this in weak AI mode. I am working on having the basic operations to be done by my chatbot.
